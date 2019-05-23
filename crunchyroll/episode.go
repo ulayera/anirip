@@ -83,6 +83,7 @@ func (e *Episode) GetEpisodeInfo(client *common.HTTPClient, quality string) erro
 	header.Add("Host", "www.crunchyroll.com")
 	header.Add("Origin", "http://static.ak.crunchyroll.com")
 	header.Add("Content-Type", "application/x-www-form-urlencoded")
+	header.Add("Accept-Language", "en;q=0.9")
 	header.Set("Referer", "http://static.ak.crunchyroll.com/versioned_assets/StandardVideoPlayer.f3770232.swf")
 	header.Add("X-Requested-With", "ShockwaveFlash/22.0.0.192")
 	resp, err = client.Post("http://www.crunchyroll.com/xml/?"+queryString, header, reqBody)
@@ -115,7 +116,7 @@ func (e *Episode) GetEpisodeInfo(client *common.HTTPClient, quality string) erro
 	}
 
 	e.Title = strings.Replace(strings.Replace(doc.Find("#showmedia_about_name").First().Text(), "“", "", -1), "”", "", -1)
-	e.Filename = common.CleanFilename(e.Filename + e.Title)
+	e.Filename = common.CleanFilename(e.Filename)
 	e.StreamURL = strings.Replace(eFile, "amp;", "", -1)
 	return nil
 }

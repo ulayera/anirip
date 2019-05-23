@@ -16,16 +16,16 @@ var (
 	tempDir   = os.TempDir() + string(os.PathSeparator) + "anirip"
 	seasonMap = map[int]string{
 		0:  "Specials",
-		1:  "Season One",
-		2:  "Season Two",
-		3:  "Season Three",
-		4:  "Season Four",
-		5:  "Season Five",
-		6:  "Season Six",
-		7:  "Season Seven",
-		8:  "Season Eight",
-		9:  "Season Nine",
-		10: "Season Ten",
+		1:  "Season 01",
+		2:  "Season 02",
+		3:  "Season 03",
+		4:  "Season 04",
+		5:  "Season 05",
+		6:  "Season 06",
+		7:  "Season 07",
+		8:  "Season 08",
+		9:  "Season 09",
+		10: "Season 10",
 	}
 )
 

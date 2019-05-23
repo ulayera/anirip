@@ -32,8 +32,8 @@ func GenerateEpisodeFilename(show string, season int, episode float64, desc stri
 	if episode < 10 {
 		ep = "0" + ep // Prefix a zero to episode
 	}
-	return CleanFilename(fmt.Sprintf("%s - S%sE%s - %s", show,
-		fmt.Sprintf("%02d", season), ep, desc))
+	return CleanFilename(fmt.Sprintf("%s - s%se%s", show,
+		fmt.Sprintf("%02d", season), ep))
 }
 
 // CleanFilename cleans the filename of any illegal file characters to prevent

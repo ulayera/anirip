@@ -1,3 +1,6 @@
+This is a fork of: https://github.com/s32x/anirip
+Making some issue fixing here and modifying some filenaming for easier Plex metadata analysis.
+
 <p align="center">
 <img src="logo.png" width="310" height="112" border="0" alt="anirip">
 <br>
