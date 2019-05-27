@@ -101,7 +101,7 @@ type Event struct {
 // DownloadSubtitles entirely downloads subtitles to our temp directory
 func (episode *Episode) DownloadSubtitles(client *common.HTTPClient, language string, tempDir string) (string, error) {
 	// Remove stale temp file to avoid conflicts in func
-	os.Remove(tempDir + string(os.PathSeparator) + "subtitles.episode.ass")
+	os.Remove(tempDir + string(os.PathSeparator) + language + ".subtitles.episode.ass")
 
 	// Populates the subtitle info for the episode
 	subtitles := new(Subtitle)

@@ -83,7 +83,6 @@ func (e *Episode) GetEpisodeInfo(client *common.HTTPClient, quality string) erro
 	header.Add("Host", "www.crunchyroll.com")
 	header.Add("Origin", "http://static.ak.crunchyroll.com")
 	header.Add("Content-Type", "application/x-www-form-urlencoded")
-	header.Add("Accept-Language", "en;q=0.9")
 	header.Set("Referer", "http://static.ak.crunchyroll.com/versioned_assets/StandardVideoPlayer.f3770232.swf")
 	header.Add("X-Requested-With", "ShockwaveFlash/22.0.0.192")
 	resp, err = client.Post("http://www.crunchyroll.com/xml/?"+queryString, header, reqBody)
@@ -122,8 +121,12 @@ func (e *Episode) GetEpisodeInfo(client *common.HTTPClient, quality string) erro
 }
 
 // Download downloads entire episode to our temp directory
-func (e *Episode) Download(vp *common.VideoProcessor) error {
-	return vp.DumpHLS(e.StreamURL)
+func (e *Episode) Download(vp *common.VideoProcessor, testOnly bool) error {
+	streamURL := e.StreamURL
+	if testOnly {
+		streamURL = "https://dl.v.vrv.co/evs/f567bc31ec99545c1b550ee212e0cee2/assets/yfnvwi9qd7b0jtu_,1757557.mp4,1757559.mp4,1757555.mp4,1757553.mp4,1757551.mp4,.urlset/master.m3u8?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cCo6Ly9kbC52LnZydi5jby9ldnMvZjU2N2JjMzFlYzk5NTQ1YzFiNTUwZWUyMTJlMGNlZTIvYXNzZXRzL3lmbnZ3aTlxZDdiMGp0dV8sMTc1NzU1Ny5tcDQsMTc1NzU1OS5tcDQsMTc1NzU1NS5tcDQsMTc1NzU1My5tcDQsMTc1NzU1MS5tcDQsLnVybHNldC9tYXN0ZXIubTN1OCIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTU1OTA4OTgyOX19fV19&Signature=cf2gng5c-eG84gIydJ1VAzNcVjEi~dOua8Fa-0X3aCxCp1x7QC4QUC5aRmqI9Ea1cBpY2Hn4hLv17rxhoTrg2ZnrD6bWY~lUibj~08XdhRLXugKEvy9N6AraF35lvFb-X4kVis5EDGnVxp-n3StmotRgRA44ReHWYT-wFovJcUX3QvOszH9rWNByalP9Edmb3NavKY~KYWiUIaRf~qJmMNBFuS3Lc6Y0uP6zvQEgGWK2fPImDEkzuX0~9mxaTcnWtvxpLBwwQEoBoAd5Wamw-3K~nI5kGu-rkiyjQlmrAnR3MaQNcoYhycz78L7wgJg6m1FnxwvFEHYVX52u9-EvnQ__&Key-Pair-Id=DLVR"
+	}
+	return vp.DumpHLS(streamURL)
 }
 
 // GetFilename returns the Episodes filename

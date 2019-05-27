@@ -55,7 +55,7 @@ func (p *VideoProcessor) MergeSubtitles(audioLang, subtitleLang string) error {
 			findAbsoluteBinary("ffmpeg"),
 			"-i", "unmerged.episode.mkv",
 			"-f", "ass",
-			"-i", "subtitles.episode.ass",
+			"-i", subtitleLang + ".subtitles.episode.ass",
 			"-c:v", "copy",
 			"-c:a", "copy",
 			"-metadata:s:a:0", "language="+audioLang,
@@ -67,7 +67,7 @@ func (p *VideoProcessor) MergeSubtitles(audioLang, subtitleLang string) error {
 	if err := cmd.Run(); err != nil {
 		return err
 	}
-	Delete(p.tempDir, "subtitles.episode.ass")
+	Delete(p.tempDir, subtitleLang + ".subtitles.episode.ass")
 	Delete(p.tempDir, "unmerged.episode.mkv")
 	return nil
 }

@@ -21,7 +21,6 @@ type Show struct {
 // Scrape appends all the seasons/episodes found for the show
 func (s *Show) Scrape(client *common.HTTPClient, showURL string) error {
 	head := http.Header{}
-	head.Add("Accept-Language", "en;q=0.9")
 	res, err := client.Get(showURL, head)
 	if err != nil {
 		return common.NewError("There was an error retrieving show page", err)

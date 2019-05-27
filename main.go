@@ -42,7 +42,7 @@ func main() {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:  "language, l",
-			Value: "eng",
+			Value: "esp",
 			Usage: "language code for the subtitles (not all are supported) ex: eng, esp",
 		},
 		cli.StringFlag{
@@ -55,12 +55,15 @@ func main() {
 	app.Action = func(c *cli.Context) error {
 		log.Cyan("v%s - by %s <%s>", app.Version, app.Author, app.Email)
 		args := c.Args()
-		if len(args) != 3 {
+		if len(args) < 3 || len(args) > 4 {
 			log.Warn("CLI Usage : " + app.Usage)
 			return nil
 		}
-
-		download(args[2], args[0], args[1], c.String("lang"), c.String("lang"))
+		testOnly := false
+		if len(args) == 4 && args[3] == "--test-only" {
+			testOnly = true
+		}
+		download(args[2], args[0], args[1], c.String("q"), c.String("l"), testOnly)
 		return nil
 	}
 
@@ -70,7 +73,7 @@ func main() {
 	}
 }
 
-func download(showURL, user, pass, quality, subLang string) {
+func download(showURL, user, pass, quality, subLang string, testOnly bool) {
 	// Verifies the existence of an anirip folder in our temp directory
 	_, err := os.Stat(tempDir)
 	if err != nil {
@@ -131,13 +134,13 @@ func download(showURL, user, pass, quality, subLang string) {
 
 			// Downloads full MKV video from stream provider
 			log.Info("Downloading video...")
-			if err = episode.Download(vp); err != nil {
+			if err = episode.Download(vp, testOnly); err != nil {
 				log.Error(err)
 				continue
 			}
 
 			// Downloads the subtitles to .ass format
-			log.Info("Downloading subtitles...")
+			log.Info("Downloading subtitles " + subLang + "...")
 			subLang, err = episode.DownloadSubtitles(client, subLang, tempDir)
 			if err != nil {
 				log.Error(err)
@@ -145,8 +148,23 @@ func download(showURL, user, pass, quality, subLang string) {
 			}
 
 			// Attempts to merge the downloaded subtitles into the video stream
-			log.Info("Merging subtitles into MKV container...")
+			log.Info("Merging subtitles " + subLang + " into MKV container...")
 			if err := vp.MergeSubtitles("jpn", subLang); err != nil {
+				log.Error(err)
+				continue
+			}
+
+			// Downloads the subtitles to .ass format
+			log.Info("Downloading subtitles eng...")
+			subLang, err = episode.DownloadSubtitles(client, "eng", tempDir)
+			if err != nil {
+				log.Error(err)
+				continue
+			}
+
+			// Attempts to merge the downloaded subtitles into the video stream
+			log.Info("Merging subtitles eng into MKV container...")
+			if err := vp.MergeSubtitles("jpn", "eng"); err != nil {
 				log.Error(err)
 				continue
 			}

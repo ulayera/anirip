@@ -72,6 +72,7 @@ func (c *HTTPClient) Post(url string, header http.Header, body io.Reader) (*http
 	if header != nil {
 		req.Header = header
 	}
+	req.Header.Add("Accept-Language", "en;q=0.9")
 	return c.request(req)
 }
 
@@ -86,6 +87,7 @@ func (c *HTTPClient) Get(url string, header http.Header) (*http.Response, error)
 	if header != nil {
 		req.Header = header
 	}
+	req.Header.Add("Accept-Language", "en;q=0.9")
 	return c.request(req)
 }
 

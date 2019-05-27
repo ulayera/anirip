@@ -55,7 +55,6 @@ func createSession(c *common.HTTPClient, user, pass, token string) error {
 	head := http.Header{}
 	head.Add("Referer", "https://www.crunchyroll.com/login")
 	head.Add("Content-Type", "application/x-www-form-urlencoded")
-	head.Add("Accept-Language", "en;q=0.9")
 	if _, err := c.Post("https://www.crunchyroll.com/login", head, body); err != nil {
 		return common.NewError("Failed to execute authentication request", err)
 	}
